@@ -17,11 +17,8 @@ from mmdet.apis import init_detector, show_result_pyplot
 
 from mmrotate.apis import inference_detector_by_patches
 from mmdet.apis import inference_detector, init_detector, show_result_pyplot
-
-
 from PIL import Image
 import cv2
-
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -74,15 +71,11 @@ def main(args):
     # build the model from a config file and a checkpoint file
     model = init_detector(args.config, args.checkpoint, device=args.device)
     cap = cv2.VideoCapture('/home/sabra-pc/LSKnet/mmdetection/demo/m.MP4')
-    count=0
     while(cap.isOpened()):
         start=time.time()
         ret, frame = cap.read()
-        count=count+1
-        if count% 20 !=0:
-            continue
-        new_width = int(frame.shape[1]/3)
-        new_height = int(frame.shape[0]/3)
+        new_width = int(frame.shape[1]/2)
+        new_height = int(frame.shape[0]/2)
 
         frame = cv2.resize(frame, (new_width, new_height))
         font = cv2.FONT_HERSHEY_SIMPLEX
@@ -100,15 +93,9 @@ def main(args):
     # show the results
         vis_frame=model.show_result(
             frame, result, score_thr=args.score_thr, wait_time=1, show=False)
-
         
         cv2.imshow('pytorch_result', vis_frame)
         cv2.waitKey(1)
-
-
-
-        
-
 
 
 
